@@ -1,0 +1,39 @@
+﻿<Window x:Class="MuzEncycl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="770">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <ListBox Grid.Column="0" Grid.Row="0" x:Name="GenresList" ItemsSource="{Binding MainGenres}" SelectedItem="{Binding SelectedGenre}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock FontSize ="16" Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1" Grid.Row="0" DataContext="{Binding SelectedGenre}">
+            <TextBlock Text="Выбранный жанр:" FontSize="20"/>
+            <TextBlock Text="Название"/>
+            <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Время зарождения"/>
+            <TextBlock Text="{Binding Time, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Место зарождения"/>
+            <TextBlock Text="{Binding Place, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Command="{Binding AddCommand}" Content="Добавить"/>
+            <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedGenre}" Content="Изменить"/>
+            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedGenre}" Content="Удалить"/>
+        </StackPanel>
+    </Grid>
+</Window>
