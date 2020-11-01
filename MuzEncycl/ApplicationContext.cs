@@ -5,7 +5,7 @@ namespace MuzEncycl
     class ApplicationContext : DbContext
     {
         public ApplicationContext() : base("DefaultConnection") { }
-        public DbSet<MainGenre> Genres { get; set; }
-        
+        public DbSet<MainGenre> MainGenres { get; set; }
+        public DbSet<SubGenre> SubGenres { get; set; }
     }
 }

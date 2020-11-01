@@ -12,13 +12,21 @@ namespace MuzEncycl
 {
     class ApplicationViewModel : INotifyPropertyChanged
     {
-        private MainGenre selectedGenre;
-
         ApplicationContext db;
-        RelayCommand addCommand;
-        RelayCommand editCommand;
-        RelayCommand deleteCommand;
+
+        private MainGenre selectedMainGenre;
+        private SubGenre selectedSubGenre;
+
+        RelayCommand addMainCommand;
+        RelayCommand editMainCommand;
+        RelayCommand deleteMainCommand;
+
+        RelayCommand addSubCommand;
+        RelayCommand editSubCommand;
+        RelayCommand deleteSubCommand;
+
         IEnumerable<MainGenre> mainGenres;
+        IEnumerable<SubGenre> subGenres;
 
         public IEnumerable<MainGenre> MainGenres
         {
@@ -29,44 +37,63 @@ namespace MuzEncycl
                 OnPropertyChanged("MainGenres");
             }
         }
+        public IEnumerable<SubGenre> SubGenres
+        {
+            get { return subGenres; }
+            set
+            {
+                subGenres = value;
+                OnPropertyChanged("SubGenres");
+            }
+        }
+
         public ApplicationViewModel()
         {
             db = new ApplicationContext();
-            db.Genres.Load();
-            MainGenres = db.Genres.Local.ToBindingList();
+            db.MainGenres.Load();
+            MainGenres = db.MainGenres.Local.ToBindingList();
         }
-        public MainGenre SelectedGenre
+        public MainGenre SelectedMainGenre
         {
-            get { return selectedGenre; }
+            get { return selectedMainGenre; }
             set
             {
-                selectedGenre = value;
-                OnPropertyChanged("SelectedGenre");
+                selectedMainGenre = value;
+                OnPropertyChanged("SelectedMainGenre");
             }
         }
-        public RelayCommand AddCommand
+        public SubGenre SelectedSubGenre
+        {
+            get { return selectedSubGenre; }
+            set
+            {
+                selectedSubGenre = value;
+                OnPropertyChanged("SelectedSubGenre");
+            }
+        }
+        public RelayCommand AddMainCommand
         {
             get
             {
-                return addCommand ??
-                    (addCommand = new RelayCommand(obj =>
+                return addMainCommand ??
+                    (addMainCommand = new RelayCommand(obj =>
                     {
-                        GenreWindow genreWindow = new GenreWindow(new MainGenre());
+                        MainGenreWindow genreWindow = new MainGenreWindow(new MainGenre());
                         if (genreWindow.ShowDialog() == true)
                         {
                             MainGenre genre = genreWindow.NewGenre;
-                            db.Genres.Add(genre);
+                            db.MainGenres.Add(genre);
                             db.SaveChanges();
                         }
                     }));
             }
         }
-        public RelayCommand EditCommand
+        public RelayCommand EditMainCommand
         {
             get
             {
-                return editCommand ??
-                    (editCommand = new RelayCommand((selectedItem) =>
+                return editMainCommand ??
+                    (editMainCommand = new RelayCommand((selectedItem) =>
                     {
                         if (selectedItem == null) return;
                         MainGenre selectedGenre = selectedItem as MainGenre;
@@ -76,7 +103,7 @@ namespace MuzEncycl
                             Time = selectedGenre.Time,
                             Place = selectedGenre.Place
                         };
-                        GenreWindow genreWindow = new GenreWindow(gnr);
+                        MainGenreWindow genreWindow = new MainGenreWindow(gnr);
 
                         if (genreWindow.ShowDialog() == true)
                         {
@@ -89,16 +116,77 @@ namespace MuzEncycl
                     }));
             }
         }
-        public RelayCommand DeleteCommand
+        public RelayCommand DeleteMainCommand
         {
             get
             {
-                return deleteCommand ??
-                    (deleteCommand = new RelayCommand((selectedGenre) =>
+                return deleteMainCommand ??
+                    (deleteMainCommand = new RelayCommand((selectedGenre) =>
                     {
                         if (selectedGenre == null) return;
                         MainGenre genre = selectedGenre as MainGenre;
-                        db.Genres.Remove(genre);
+                        db.MainGenres.Remove(genre);
+                        db.SaveChanges();
+                    }));
+            }
+        }
+        public RelayCommand AddSubCommand
+        {
+            get
+            {
+                return addSubCommand ??
+                    (addSubCommand = new RelayCommand(obj =>
+                    {
+                        SubGenreWindow genreWindow = new SubGenreWindow(new SubGenre());
+                        if (genreWindow.ShowDialog() == true)
+                        {
+                            SubGenre genre = genreWindow.NewGenre;
+                            db.SubGenres.Add(genre);
+                            db.SaveChanges();
+                        }
+                    }));
+            }
+        }
+        public RelayCommand EditSubCommand
+        {
+            get
+            {
+                return editSubCommand ??
+                    (editSubCommand = new RelayCommand((selectedItem) =>
+                    {
+                        if (selectedItem == null) return;
+                        SubGenre selectedGenre = selectedItem as SubGenre;
+                        SubGenre gnr = new SubGenre()
+                        {
+                            Name = selectedGenre.Name,
+                            Time = selectedGenre.Time,
+                            Place = selectedGenre.Place
+                        };
+                        SubGenreWindow genreWindow = new SubGenreWindow(gnr);
+
+                        if (genreWindow.ShowDialog() == true)
+                        {
+                            selectedGenre.Name = genreWindow.NewGenre.Name;
+                            selectedGenre.Genre = genreWindow.NewGenre.Genre;
+                            selectedGenre.Time = genreWindow.NewGenre.Time;
+                            selectedGenre.Origin = genreWindow.NewGenre.Origin;
+                            selectedGenre.Place = genreWindow.NewGenre.Place;
+                            db.Entry(selectedGenre).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }));
+            }
+        }
+        public RelayCommand DeleteSubCommand
+        {
+            get
+            {
+                return deleteSubCommand ??
+                    (deleteSubCommand = new RelayCommand((selectedGenre) =>
+                    {
+                        if (selectedGenre == null) return;
+                        SubGenre genre = selectedGenre as SubGenre;
+                        db.SubGenres.Remove(genre);
                         db.SaveChanges();
                     }));
             }

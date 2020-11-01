@@ -5,10 +5,10 @@ namespace MuzEncycl
     /// <summary>
     /// Логика взаимодействия для GenreWindow.xaml
     /// </summary>
-    public partial class GenreWindow : Window
+    public partial class MainGenreWindow : Window
     {
         public MainGenre NewGenre { get; private set; }
-        public GenreWindow(MainGenre genre)
+        public MainGenreWindow(MainGenre genre)
         {
             InitializeComponent();
             NewGenre = genre;

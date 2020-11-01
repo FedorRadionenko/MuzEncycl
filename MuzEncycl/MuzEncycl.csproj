@@ -74,11 +74,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GenreWindow.xaml.cs">
-      <DependentUpon>GenreWindow.xaml</DependentUpon>
+    <Compile Include="MainGenreWindow.xaml.cs">
+      <DependentUpon>MainGenreWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
-    <Page Include="GenreWindow.xaml">
+    <Compile Include="SubGenre.cs" />
+    <Compile Include="SubGenreWindow.xaml.cs">
+      <DependentUpon>SubGenreWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainGenreWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,6 +101,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SubGenreWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
